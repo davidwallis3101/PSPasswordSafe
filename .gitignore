@@ -1,3 +1,6 @@
 *.ibak
+*.plk
+*.psafe3
+*.cov
 test1.ps1
-TestSafe.psafe3
+
