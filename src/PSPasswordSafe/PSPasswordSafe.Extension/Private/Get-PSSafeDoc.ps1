@@ -3,12 +3,15 @@ Function Get-PSSafeDoc {
     Param(
         $Path,
 
-        $Passcode
+        [SecureString]$Passcode,
+
+        [hashtable]$AdditionalParameters
     )
 
+    if ($AdditionalParameters.ContainsKey('Verbose') -and ($AdditionalParameters['Verbose'] -eq $true)) {
+        $VerbosePreference = 'Continue'
+    }
 
-    # $doc = [Medo.Security.Cryptography.PasswordSafe.Document]::Load("C:\users\dwallis\source\repos\PSPasswordSafe\TestSafe.psafe3","MyPassword1!")
-    $doc = [Medo.Security.Cryptography.PasswordSafe.Document]::Load($Path,$Passcode)
-
-    return $doc
+    Write-verbose "Loading passwordsafe database $($Path)"
+    [Medo.Security.Cryptography.PasswordSafe.Document]::Load($Path, (Unlock-SecureString $Passcode))
 }
